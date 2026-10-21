@@ -1,0 +1,223 @@
+/*
+ * TAGAME design tokens
+ *
+ * Source of truth for implementation-facing custom properties. Component
+ * styles must reference semantic tokens instead of literal color or spacing
+ * values. This file intentionally contains no component selectors.
+ */
+
+:root {
+  /* Color primitives */
+  --tg-color-neutral-950: #050a0e;
+  --tg-color-neutral-900: #0b1117;
+  --tg-color-neutral-850: #101820;
+  --tg-color-neutral-800: #151f28;
+  --tg-color-neutral-750: #1b2731;
+  --tg-color-neutral-700: #25343f;
+  --tg-color-neutral-600: #40525e;
+  --tg-color-neutral-500: #657984;
+  --tg-color-neutral-400: #91a6ad;
+  --tg-color-neutral-300: #bed0d4;
+  --tg-color-neutral-200: #d8e7e9;
+  --tg-color-neutral-100: #edf8f8;
+
+  --tg-color-cyan-300: #76f5fa;
+  --tg-color-cyan-400: #35e7f0;
+  --tg-color-cyan-500: #12bdcb;
+  --tg-color-cyan-700: #08717c;
+
+  --tg-color-green-300: #8ef5b9;
+  --tg-color-green-400: #49e797;
+  --tg-color-green-700: #1f9b5d;
+
+  --tg-color-yellow-300: #ffe27a;
+  --tg-color-yellow-400: #f4d44d;
+  --tg-color-yellow-700: #b8921e;
+
+  --tg-color-orange-300: #ffbe77;
+  --tg-color-orange-500: #d98432;
+
+  --tg-color-red-300: #ff9b9f;
+  --tg-color-red-400: #ff6b70;
+  --tg-color-red-500: #e74850;
+  --tg-color-red-700: #a72e3b;
+
+  /* Semantic color roles */
+  --tg-color-bg-canvas: var(--tg-color-neutral-950);
+  --tg-color-bg-subtle: var(--tg-color-neutral-900);
+  --tg-color-bg-surface: var(--tg-color-neutral-850);
+  --tg-color-bg-surface-raised: var(--tg-color-neutral-800);
+  --tg-color-bg-surface-selected: #102a31;
+  --tg-color-bg-overlay: rgb(0 4 7 / 82%);
+  --tg-color-bg-inverse: var(--tg-color-neutral-100);
+
+  --tg-color-fg-primary: var(--tg-color-neutral-100);
+  --tg-color-fg-secondary: var(--tg-color-neutral-300);
+  --tg-color-fg-muted: var(--tg-color-neutral-400);
+  --tg-color-fg-disabled: var(--tg-color-neutral-500);
+  --tg-color-fg-inverse: #071014;
+  --tg-color-fg-link: var(--tg-color-cyan-300);
+  --tg-color-fg-link-hover: #c6fbfd;
+
+  --tg-color-border-subtle: var(--tg-color-neutral-700);
+  --tg-color-border-default: var(--tg-color-neutral-600);
+  --tg-color-border-strong: var(--tg-color-neutral-400);
+  --tg-color-border-focus: var(--tg-color-cyan-300);
+  --tg-color-border-disabled: var(--tg-color-neutral-700);
+
+  --tg-color-action-primary-bg: var(--tg-color-cyan-400);
+  --tg-color-action-primary-bg-hover: var(--tg-color-cyan-300);
+  --tg-color-action-primary-bg-pressed: var(--tg-color-cyan-500);
+  --tg-color-action-primary-fg: #00191c;
+  --tg-color-action-secondary-bg: transparent;
+  --tg-color-action-secondary-bg-hover: #142b33;
+  --tg-color-action-secondary-bg-pressed: #1b3943;
+  --tg-color-action-secondary-fg: var(--tg-color-cyan-300);
+  --tg-color-action-danger-bg: var(--tg-color-red-500);
+  --tg-color-action-danger-bg-hover: var(--tg-color-red-400);
+  --tg-color-action-danger-bg-pressed: var(--tg-color-red-700);
+  --tg-color-action-danger-fg: #230609;
+
+  --tg-color-control-bg: var(--tg-color-neutral-900);
+  --tg-color-control-bg-hover: #0f1b23;
+  --tg-color-control-bg-disabled: var(--tg-color-neutral-850);
+  --tg-color-control-fg: var(--tg-color-fg-primary);
+  --tg-color-control-placeholder: var(--tg-color-fg-muted);
+  --tg-color-control-border: var(--tg-color-border-default);
+  --tg-color-control-border-hover: var(--tg-color-border-strong);
+  --tg-color-control-border-error: var(--tg-color-red-400);
+
+  --tg-color-status-success-bg: #0c2b20;
+  --tg-color-status-success-border: var(--tg-color-green-700);
+  --tg-color-status-success-fg: var(--tg-color-green-300);
+  --tg-color-status-info-bg: #062b33;
+  --tg-color-status-info-border: var(--tg-color-cyan-500);
+  --tg-color-status-info-fg: var(--tg-color-cyan-300);
+  --tg-color-status-warning-bg: #30270a;
+  --tg-color-status-warning-border: var(--tg-color-yellow-700);
+  --tg-color-status-warning-fg: var(--tg-color-yellow-300);
+  --tg-color-status-error-bg: #361419;
+  --tg-color-status-error-border: var(--tg-color-red-500);
+  --tg-color-status-error-fg: var(--tg-color-red-300);
+  --tg-color-status-offline-bg: #202833;
+  --tg-color-status-offline-border: #65717e;
+  --tg-color-status-offline-fg: #d1d8e0;
+  --tg-color-status-timeout-bg: #34220c;
+  --tg-color-status-timeout-border: var(--tg-color-orange-500);
+  --tg-color-status-timeout-fg: var(--tg-color-orange-300);
+  --tg-color-status-rejected-bg: #35131e;
+  --tg-color-status-rejected-border: #bf4771;
+  --tg-color-status-rejected-fg: #ffb0c8;
+  --tg-color-status-disabled-bg: #1b252c;
+  --tg-color-status-disabled-border: var(--tg-color-neutral-600);
+  --tg-color-status-disabled-fg: var(--tg-color-neutral-300);
+
+  /* Command-delivery and session-state roles remain distinct. */
+  --tg-color-command-fg: var(--tg-color-cyan-300);
+  --tg-color-command-border: var(--tg-color-cyan-500);
+  --tg-color-session-starting-fg: var(--tg-color-cyan-300);
+  --tg-color-session-starting-border: var(--tg-color-cyan-500);
+  --tg-color-session-running-fg: var(--tg-color-green-300);
+  --tg-color-session-running-border: var(--tg-color-green-700);
+  --tg-color-session-stopping-fg: var(--tg-color-yellow-300);
+  --tg-color-session-stopping-border: var(--tg-color-yellow-700);
+  --tg-color-session-stopped-fg: var(--tg-color-neutral-300);
+  --tg-color-session-stopped-border: var(--tg-color-neutral-600);
+  --tg-color-session-error-fg: var(--tg-color-red-300);
+  --tg-color-session-error-border: var(--tg-color-red-500);
+
+  /* Typography */
+  --tg-font-family-display: "Oxanium", "Rajdhani", "Arial Narrow", sans-serif;
+  --tg-font-family-sans: "Inter", "Segoe UI", Arial, sans-serif;
+  --tg-font-family-mono: "JetBrains Mono", "Cascadia Mono", Consolas, monospace;
+  --tg-font-weight-regular: 400;
+  --tg-font-weight-medium: 500;
+  --tg-font-weight-semibold: 600;
+  --tg-font-weight-bold: 700;
+  --tg-font-size-2xs: 0.6875rem;
+  --tg-font-size-xs: 0.75rem;
+  --tg-font-size-sm: 0.875rem;
+  --tg-font-size-md: 1rem;
+  --tg-font-size-lg: 1.125rem;
+  --tg-font-size-xl: 1.25rem;
+  --tg-font-size-2xl: 1.5rem;
+  --tg-font-size-3xl: 1.875rem;
+  --tg-font-size-4xl: 2.25rem;
+  --tg-line-height-tight: 1.15;
+  --tg-line-height-snug: 1.3;
+  --tg-line-height-normal: 1.5;
+  --tg-line-height-relaxed: 1.65;
+  --tg-letter-spacing-display: 0.04em;
+  --tg-letter-spacing-label: 0.08em;
+  --tg-letter-spacing-normal: 0;
+
+  /* Spacing and sizing */
+  --tg-space-0: 0;
+  --tg-space-1: 0.25rem;
+  --tg-space-2: 0.5rem;
+  --tg-space-3: 0.75rem;
+  --tg-space-4: 1rem;
+  --tg-space-5: 1.25rem;
+  --tg-space-6: 1.5rem;
+  --tg-space-8: 2rem;
+  --tg-space-10: 2.5rem;
+  --tg-space-12: 3rem;
+  --tg-space-16: 4rem;
+  --tg-size-control-sm: 2.25rem;
+  --tg-size-control-md: 2.75rem;
+  --tg-size-control-lg: 3.25rem;
+  --tg-size-icon-sm: 1rem;
+  --tg-size-icon-md: 1.25rem;
+  --tg-size-icon-lg: 1.5rem;
+  --tg-size-sidebar: 16rem;
+  --tg-size-header: 4rem;
+  --tg-size-content-max: 90rem;
+  --tg-size-page-gutter-mobile: var(--tg-space-4);
+  --tg-size-page-gutter-desktop: var(--tg-space-8);
+
+  /* Geometry and elevation */
+  --tg-border-width-hairline: 1px;
+  --tg-border-width-strong: 2px;
+  --tg-radius-none: 0;
+  --tg-radius-sm: 0.125rem;
+  --tg-radius-md: 0.25rem;
+  --tg-radius-lg: 0.5rem;
+  --tg-radius-pill: 999px;
+  --tg-clip-corner-sm: 0.5rem;
+  --tg-clip-corner-md: 0.875rem;
+  --tg-shadow-none: none;
+  --tg-shadow-1: 0 4px 16px rgb(0 0 0 / 22%);
+  --tg-shadow-2: 0 12px 32px rgb(0 0 0 / 34%);
+  --tg-shadow-focus: 0 0 0 3px rgb(118 245 250 / 38%);
+
+  /* Opacity, motion, and layering */
+  --tg-opacity-disabled: 0.52;
+  --tg-opacity-scrim: 0.82;
+  --tg-duration-instant: 0ms;
+  --tg-duration-fast: 120ms;
+  --tg-duration-normal: 180ms;
+  --tg-duration-slow: 280ms;
+  --tg-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --tg-easing-emphasized: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --tg-z-base: 0;
+  --tg-z-sticky: 100;
+  --tg-z-dropdown: 200;
+  --tg-z-drawer: 300;
+  --tg-z-modal: 400;
+  --tg-z-toast: 500;
+  --tg-z-tooltip: 600;
+
+  /* Responsive breakpoints are also documented in TOKENS.md. */
+  --tg-breakpoint-sm: 36rem;
+  --tg-breakpoint-md: 48rem;
+  --tg-breakpoint-lg: 64rem;
+  --tg-breakpoint-xl: 80rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tg-duration-fast: 0ms;
+    --tg-duration-normal: 0ms;
+    --tg-duration-slow: 0ms;
+  }
+}
