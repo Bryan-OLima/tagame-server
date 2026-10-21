@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "sqlite"
+  url          = env("DATABASE_URL")
+  relationMode = "foreignKeys"
+}
+
+model User {
+  id              String     @id @default(uuid())
+  name            String
+  email           String     @unique
+  passwordHash    String     @map("password_hash")
+  role            String
+  profilePhotoUrl String?    @map("profile_photo_url")
+  isActive        Boolean    @default(true) @map("is_active")
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  lastLoginAt     DateTime?  @map("last_login_at")
+  revokedAt       DateTime?  @map("revoked_at")
+  devices         Device[]
+  auditLogs       AuditLog[]
+
+  @@map("users")
+}
+
+model Device {
+  id         String        @id @default(uuid())
+  userId     String        @map("user_id")
+  name       String
+  platform   String
+  model      String?
+  tokenHash  String        @unique @map("token_hash")
+  isActive   Boolean       @default(true) @map("is_active")
+  createdAt  DateTime      @default(now()) @map("created_at")
+  lastSeenAt DateTime?     @map("last_seen_at")
+  revokedAt  DateTime?     @map("revoked_at")
+  user       User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  sessions   GameSession[]
+  events     LaunchEvent[]
+
+  @@index([userId])
+  @@map("devices")
+}
+
+model Pc {
+  id          String          @id @default(uuid())
+  name        String
+  hostname    String
+  isActive    Boolean         @default(true) @map("is_active")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  agents      Agent[]
+  assignments TagAssignment[]
+  sessions    GameSession[]
+  events      LaunchEvent[]
+
+  @@map("pcs")
+}
+
+model Agent {
+  id              String        @id @default(uuid())
+  pcId            String        @map("pc_id")
+  agentTokenHash  String        @unique @map("agent_token_hash")
+  version         String?
+  status          String
+  createdAt       DateTime      @default(now()) @map("created_at")
+  pairedAt        DateTime?     @map("paired_at")
+  lastHeartbeatAt DateTime?     @map("last_heartbeat_at")
+  revokedAt       DateTime?     @map("revoked_at")
+  lastError       String?       @map("last_error")
+  pc              Pc            @relation(fields: [pcId], references: [id], onDelete: Restrict)
+  events          LaunchEvent[]
+
+  @@index([pcId])
+  @@map("agents")
+}
+
+model Tag {
+  id          String          @id @default(uuid())
+  token       String          @unique
+  name        String
+  isActive    Boolean         @default(true) @map("is_active")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  lastUsedAt  DateTime?       @map("last_used_at")
+  assignments TagAssignment[]
+  sessions    GameSession[]
+  events      LaunchEvent[]
+
+  @@map("tags")
+}
+
+model Game {
+  id             String          @id @default(uuid())
+  name           String
+  steamAppid     Int             @unique @map("steam_appid")
+  coverUrl       String?         @map("cover_url")
+  coverSource    String?         @map("cover_source")
+  coverUpdatedAt DateTime?       @map("cover_updated_at")
+  executableName String?         @map("executable_name")
+  isActive       Boolean         @default(true) @map("is_active")
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  assignments    TagAssignment[]
+  sessions       GameSession[]
+  events         LaunchEvent[]
+
+  @@map("games")
+}
+
+model TagAssignment {
+  id        String    @id @default(uuid())
+  tagId     String    @map("tag_id")
+  gameId    String    @map("game_id")
+  pcId      String    @map("pc_id")
+  isActive  Boolean   @default(true) @map("is_active")
+  createdAt DateTime  @default(now()) @map("created_at")
+  endedAt   DateTime? @map("ended_at")
+  tag       Tag       @relation(fields: [tagId], references: [id], onDelete: Restrict)
+  game      Game      @relation(fields: [gameId], references: [id], onDelete: Restrict)
+  pc        Pc        @relation(fields: [pcId], references: [id], onDelete: Restrict)
+
+  @@index([tagId])
+  @@index([gameId])
+  @@index([pcId])
+  @@map("tag_assignments")
+}
+
+model GameSession {
+  id              String        @id @default(uuid())
+  tagId           String        @map("tag_id")
+  gameId          String        @map("game_id")
+  pcId            String        @map("pc_id")
+  deviceId        String        @map("device_id")
+  steamAppid      Int           @map("steam_appid")
+  status          String
+  startedAt       DateTime?     @map("started_at")
+  endedAt         DateTime?     @map("ended_at")
+  lastHeartbeatAt DateTime?     @map("last_heartbeat_at")
+  errorMessage    String?       @map("error_message")
+  tag             Tag           @relation(fields: [tagId], references: [id], onDelete: Restrict)
+  game            Game          @relation(fields: [gameId], references: [id], onDelete: Restrict)
+  pc              Pc            @relation(fields: [pcId], references: [id], onDelete: Restrict)
+  device          Device        @relation(fields: [deviceId], references: [id], onDelete: Restrict)
+  events          LaunchEvent[]
+
+  @@index([tagId])
+  @@index([gameId])
+  @@index([pcId])
+  @@index([deviceId])
+  @@map("game_sessions")
+}
+
+model LaunchEvent {
+  id                         String       @id @default(uuid())
+  sessionId                  String?      @map("session_id")
+  tagId                      String?      @map("tag_id")
+  gameId                     String?      @map("game_id")
+  pcId                       String?      @map("pc_id")
+  agentId                    String?      @map("agent_id")
+  deviceId                   String?      @map("device_id")
+  presentedTagFingerprint    String?      @map("presented_tag_fingerprint")
+  presentedDeviceFingerprint String?      @map("presented_device_fingerprint")
+  action                     String?
+  status                     String
+  result                     String?
+  errorMessage               String?      @map("error_message")
+  sourceIp                   String?      @map("source_ip")
+  createdAt                  DateTime     @default(now()) @map("created_at")
+  validatedAt                DateTime?    @map("validated_at")
+  dispatchedAt               DateTime?    @map("dispatched_at")
+  agentAcknowledgedAt        DateTime?    @map("agent_acknowledged_at")
+  actionRequestedAt          DateTime?    @map("action_requested_at")
+  completedAt                DateTime?    @map("completed_at")
+  session                    GameSession? @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  tag                        Tag?         @relation(fields: [tagId], references: [id], onDelete: Restrict)
+  game                       Game?        @relation(fields: [gameId], references: [id], onDelete: Restrict)
+  pc                         Pc?          @relation(fields: [pcId], references: [id], onDelete: Restrict)
+  agent                      Agent?       @relation(fields: [agentId], references: [id], onDelete: Restrict)
+  device                     Device?      @relation(fields: [deviceId], references: [id], onDelete: Restrict)
+
+  @@index([sessionId])
+  @@index([tagId])
+  @@index([gameId])
+  @@index([pcId])
+  @@index([agentId])
+  @@index([deviceId])
+  @@index([status])
+  @@map("launch_events")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  action     String
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id")
+  details    String
+  createdAt  DateTime @default(now()) @map("created_at")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@index([userId])
+  @@index([entityType, entityId])
+  @@map("audit_logs")
+}
