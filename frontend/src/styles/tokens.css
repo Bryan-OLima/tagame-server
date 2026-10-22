@@ -153,6 +153,7 @@
 
   /* Spacing and sizing */
   --tg-space-0: 0;
+  --tg-space-0-5: 0.125rem;
   --tg-space-1: 0.25rem;
   --tg-space-2: 0.5rem;
   --tg-space-3: 0.75rem;

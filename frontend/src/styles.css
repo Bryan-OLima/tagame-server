@@ -1,0 +1,30 @@
+@import url('./styles/tokens.css');
+
+@font-face {
+  font-family: 'Oxanium';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('./assets/fonts/oxanium/oxanium-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('./assets/fonts/inter/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('./assets/fonts/jetbrains-mono/jetbrains-mono-latin.woff2') format('woff2');
+}
+
+* { box-sizing: border-box; }
+html { background: var(--tg-color-bg-canvas); color-scheme: dark; }
+body { background: var(--tg-color-bg-canvas); color: var(--tg-color-fg-primary); font-family: var(--tg-font-family-sans); margin: var(--tg-space-0); min-inline-size: calc(var(--tg-space-16) * 16); }
+@media (max-width: 36rem) { body { min-inline-size: auto; } }
