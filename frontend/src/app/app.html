@@ -7,14 +7,15 @@
       <div class="sidebar-brand"><span class="brand-wordmark"><span class="brand-initial">T</span>AGAME</span><small>NFC GAME LAUNCHER</small></div>
       <div class="brand-separator" aria-hidden="true"></div>
       <nav class="navigation">
-        @for (item of navigation; track item.label) { @if (!item.adminOnly || role() === 'admin') {
+        @for (item of visibleNavigation(); track item.label; let i = $index) {
+          @if (i > 0 && visibleNavigation()[i - 1].group !== item.group) { <div class="nav-divider" aria-hidden="true"></div> }
           <button class="nav-item" type="button" [class.is-active]="activePage() === item.label" [attr.aria-current]="activePage() === item.label ? 'page' : null" (click)="selectPage(item.label)"><tabler-icon class="nav-icon" [icon]="item.icon" [size]="24" [stroke]="1.8" aria-hidden="true" /><span>{{ item.label }}</span></button>
-        } }
+        }
       </nav>
-      <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span><strong>TAGAME v1.0.0</strong><small>LOCAL HOST</small></span><button class="sign-out" type="button" (click)="leave()">Sair</button></div>
+      <div class="sidebar-footer"><span class="status-dot" aria-hidden="true"></span><span><strong>TAGAME v1.0.0</strong><small>LOCAL HOST</small></span></div>
     </aside>
     <div class="application">
-      <header class="app-header"><button class="menu-button" type="button" aria-label="Abrir navegação" [attr.aria-expanded]="menuOpen()" (click)="toggleMenu()"><tabler-icon [icon]="icons.menu" [size]="24" [stroke]="1.8" aria-hidden="true" /></button><div class="header-status"><span class="status-dot" aria-hidden="true"></span><span>SYSTEM ONLINE</span><i aria-hidden="true">//</i><span>LOCAL NODE</span></div><div class="header-clock"><strong>21:14</strong><small>LOCAL TIME</small></div><button class="header-control" type="button" aria-label="Configurações"><tabler-icon [icon]="icons.settings" [size]="22" [stroke]="1.8" aria-hidden="true" /></button><button class="header-control" type="button" (click)="leave()" aria-label="Sair do protótipo"><tabler-icon [icon]="icons.logout" [size]="22" [stroke]="1.8" aria-hidden="true" /></button></header>
+      <header class="app-header"><button class="menu-button" type="button" aria-label="Abrir navegação" [attr.aria-expanded]="menuOpen()" (click)="toggleMenu()"><tabler-icon [icon]="icons.menu" [size]="24" [stroke]="1.8" aria-hidden="true" /></button><div class="header-status"><span class="status-dot" aria-hidden="true"></span><span>SYSTEM ONLINE</span><i aria-hidden="true">//</i><span>LOCAL NODE</span></div><div class="header-clock"><strong>21:14</strong><small>MON, APR 28, 2025</small></div><button class="header-control" type="button" aria-label="Configurações"><tabler-icon [icon]="icons.settings" [size]="22" [stroke]="1.8" aria-hidden="true" /></button><button class="header-control header-control-exit" type="button" (click)="leave()" aria-label="Sign out of prototype"><tabler-icon [icon]="icons.logout" [size]="22" [stroke]="1.8" aria-hidden="true" /></button></header>
       <main class="content" id="main-content">
         @if (activePage() === 'Dashboard') {
           <section class="page-heading" aria-labelledby="dashboard-title"><div><h1 id="dashboard-title">Dashboard</h1><p class="eyebrow">OVERVIEW &nbsp;//&nbsp; GAME LAUNCHER CONTROL</p></div><div class="state-switcher" aria-label="Estado de demonstração"><span>Preview</span>@for (state of ['live', 'loading', 'empty', 'error']; track state) { <button type="button" [class.is-selected]="previewState() === state" (click)="setPreviewState($any(state))">{{ state === 'live' ? 'Ativo' : state === 'loading' ? 'Carregando' : state === 'empty' ? 'Vazio' : 'Erro' }}</button> }</div></section>

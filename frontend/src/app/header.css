@@ -1,0 +1,307 @@
+/*
+ * Shell, background atmosphere, and header visual layer (loaded after app.css).
+ * Visual only:
+ * 1) Continuous full-bleed background on .application (no cut-off at .content max-width).
+ * 2) Subtle cyber grid + radial cyan/teal atmospheric glow + dark vignette.
+ * 3) Right-edge red mixer-waveform track mirroring the left sidebar edge.
+ * 4) Technical red header contour whose dark surface is strictly clipped to the red line.
+ */
+
+.application {
+  --mix-red: color-mix(in srgb, var(--tg-color-status-error-border) 72%, transparent);
+  --grid-line: color-mix(in srgb, var(--tg-color-cyan-700) 7%, transparent);
+  --grid-sub: color-mix(in srgb, var(--tg-color-neutral-700) 8%, transparent);
+  background:
+    /* Right-edge red mixer waveform (mirrored from the left sidebar) */
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) var(--tg-space-1)
+    ) right 0 top 0 / var(--tg-space-1) 100% no-repeat,
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) var(--tg-space-3)
+    ) right 0 top 0 / var(--tg-space-2) 100% no-repeat,
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) var(--tg-space-5)
+    ) right 0 top var(--tg-space-2) / var(--tg-space-3) 100% no-repeat,
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))
+    ) right 0 top var(--tg-space-4) / var(--tg-space-4) 100% no-repeat,
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))
+    ) right 0 top var(--tg-space-3) / var(--tg-space-2) 100% no-repeat,
+    repeating-linear-gradient(
+      180deg,
+      var(--mix-red) 0 var(--tg-border-width-hairline),
+      transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))
+    ) right 0 top calc(var(--tg-space-4) + var(--tg-space-1)) / var(--tg-space-2) 100% no-repeat,
+    /* Subtle multi-scale technical grid across the whole application */
+    linear-gradient(var(--grid-line) var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline)) 0 0 / var(--tg-space-12) var(--tg-space-12),
+    linear-gradient(90deg, var(--grid-line) var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline)) 0 0 / var(--tg-space-12) var(--tg-space-12),
+    linear-gradient(var(--grid-sub) var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline)) 0 0 / var(--tg-space-3) var(--tg-space-3),
+    linear-gradient(90deg, var(--grid-sub) var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline)) 0 0 / var(--tg-space-3) var(--tg-space-3),
+    /* Atmospheric cyan/teal console glow + dark edge vignette */
+    radial-gradient(ellipse 55% 38% at 32% 14%, color-mix(in srgb, var(--tg-color-cyan-700) 28%, transparent), transparent 72%),
+    radial-gradient(ellipse 48% 42% at 68% 48%, color-mix(in srgb, var(--tg-color-status-info-bg) 55%, transparent), transparent 75%),
+    radial-gradient(ellipse 90% 85% at 50% 50%, transparent 55%, color-mix(in srgb, var(--tg-color-bg-canvas) 82%, transparent) 100%),
+    var(--tg-color-bg-canvas);
+  position: relative;
+}
+
+/* Remove the hard, clipped grid from .content so the continuous .application backdrop shines through. */
+.content {
+  background: transparent;
+}
+
+.app-header {
+  --hdr-step: 14px;
+  --hdr-diag-top: 8px;
+  --hdr-diag: calc(var(--tg-size-header) - var(--hdr-step) - var(--hdr-diag-top));
+  --hdr-red: var(--tg-color-status-error-border);
+  --hdr-red-dim: color-mix(in srgb, var(--tg-color-status-error-border) 68%, transparent);
+  --hdr-bg: linear-gradient(180deg, var(--tg-color-bg-canvas), color-mix(in srgb, var(--tg-color-bg-subtle) 92%, transparent));
+  background: transparent;
+  border-block-end: 0;
+  gap: 0;
+  overflow: hidden;
+  padding-inline: 0 var(--tg-space-3);
+  position: relative;
+}
+
+/* Remove the old hanging L-bracket from app.css; right-side surface is handled by .header-clock + controls. */
+.app-header::after {
+  display: none;
+}
+
+/* Left 45° diagonal line starting slightly below the top edge, matching the reference. */
+.app-header::before {
+  background: linear-gradient(
+    to top right,
+    transparent calc(50% - 0.85px),
+    var(--hdr-red-dim) calc(50% - 0.85px),
+    var(--hdr-red-dim) calc(50% + 0.85px),
+    transparent calc(50% + 0.85px)
+  );
+  block-size: var(--hdr-diag);
+  content: '';
+  inline-size: var(--hdr-diag);
+  inset: var(--hdr-diag-top) auto auto 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+/*
+ * Left status section: its dark background is clipped exactly to the 45° diagonal
+ * and stops at the upper red line (calc(100% - var(--hdr-step))). Everything outside
+ * that polygon is genuinely transparent, revealing the continuous .application background.
+ */
+.header-status {
+  align-items: center;
+  background: var(--hdr-bg);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--hdr-step)),
+    var(--hdr-diag) calc(100% - var(--hdr-step)),
+    0 var(--hdr-diag-top)
+  );
+  color: var(--tg-color-fg-secondary);
+  flex: 1 1 auto;
+  min-block-size: var(--tg-size-header);
+  padding-block-end: var(--hdr-step);
+  padding-inline-start: calc(var(--tg-size-page-gutter-desktop) + var(--tg-space-4));
+  position: relative;
+  z-index: 1;
+}
+
+/* Main horizontal red line from the end of the left diagonal up to the clock vertical line. */
+.header-status::after {
+  background: var(--hdr-red-dim);
+  block-size: var(--tg-border-width-hairline);
+  content: '';
+  inset: auto -2px var(--hdr-step) var(--hdr-diag);
+  pointer-events: none;
+  position: absolute;
+}
+
+.header-status .status-dot {
+  animation: tg-header-dot-pulse 3.4s ease-in-out infinite;
+  background: var(--tg-color-green-400);
+  block-size: calc(var(--tg-space-2) + 2px);
+  box-shadow: 0 0 var(--tg-space-3) var(--tg-color-green-400);
+  inline-size: calc(var(--tg-space-2) + 2px);
+}
+
+@keyframes tg-header-dot-pulse {
+  0%,
+  100% {
+    background: var(--tg-color-green-300);
+    box-shadow:
+      0 0 var(--tg-space-2) var(--tg-color-green-300),
+      0 0 var(--tg-space-3) var(--tg-color-green-400),
+      0 0 0 2px color-mix(in srgb, var(--tg-color-green-400) 18%, transparent);
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  50% {
+    background: var(--tg-color-green-400);
+    box-shadow:
+      0 0 var(--tg-space-1) var(--tg-color-green-700),
+      0 0 0 0 transparent;
+    opacity: 0.68;
+    transform: scale(0.92);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-status .status-dot {
+    animation: none;
+  }
+}
+
+/* Clock block on the right section. */
+.header-clock {
+  align-content: center;
+  background: transparent;
+  border: 0;
+  clip-path: none;
+  display: grid;
+  gap: 2px;
+  justify-items: start;
+  margin-inline-start: 0;
+  min-block-size: var(--tg-size-header);
+  padding-inline: var(--tg-space-6) var(--tg-space-5);
+  position: relative;
+  z-index: 2;
+}
+
+/*
+ * Vertical red technical line with subtle ticks + 45° step down to the bottom border.
+ * The horizontal line meets the vertical line ABOVE its bottom tip (the vertical stem
+ * extends a few pixels past the junction into the step, matching the reference).
+ */
+.header-clock::before {
+  --hdr-stem-overhang: 5px;
+  --hdr-diag-step: calc(var(--hdr-step) - var(--hdr-stem-overhang));
+  background:
+    linear-gradient(var(--hdr-red), var(--hdr-red)) left 0 top var(--tg-space-2) / 3px var(--tg-border-width-hairline) no-repeat,
+    linear-gradient(var(--hdr-red), var(--hdr-red)) left 0 bottom calc(var(--hdr-step) + 3px) / 3px var(--tg-border-width-hairline) no-repeat,
+    linear-gradient(180deg, var(--hdr-red-dim), var(--hdr-red-dim)) left 2px top var(--tg-space-2) / var(--tg-border-width-hairline) calc(100% - var(--tg-space-2) - var(--hdr-diag-step)) no-repeat,
+    linear-gradient(
+      to top right,
+      transparent calc(50% - 0.85px),
+      var(--hdr-red-dim) calc(50% - 0.85px),
+      var(--hdr-red-dim) calc(50% + 0.85px),
+      transparent calc(50% + 0.85px)
+    ) left 2px bottom 0 / var(--hdr-diag-step) var(--hdr-diag-step) no-repeat;
+  content: '';
+  inline-size: calc(var(--hdr-diag-step) + 4px);
+  inset: 0 auto 0 -2px;
+  pointer-events: none;
+  position: absolute;
+}
+
+/*
+ * Right-side header surface + bottom red line under the clock and action icons,
+ * clipped cleanly to the 45° step so nothing bleeds outside the red contour.
+ */
+.header-clock::after {
+  --hdr-stem-overhang: 5px;
+  --hdr-diag-step: calc(var(--hdr-step) - var(--hdr-stem-overhang));
+  background:
+    linear-gradient(var(--hdr-red-dim), var(--hdr-red-dim)) left var(--hdr-diag-step) bottom 0 / 100% var(--tg-border-width-hairline) no-repeat,
+    var(--hdr-bg);
+  block-size: var(--tg-size-header);
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 100%,
+    var(--hdr-diag-step) 100%,
+    0 calc(100% - var(--hdr-diag-step))
+  );
+  content: '';
+  inline-size: calc(100% + (var(--tg-size-control-md) + var(--tg-space-2)) * 2 + var(--tg-space-4));
+  inset: 0 auto 0 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.header-clock strong {
+  color: var(--tg-color-action-primary-bg);
+  font-size: var(--tg-font-size-xl);
+  font-weight: var(--tg-font-weight-semibold);
+  letter-spacing: var(--tg-letter-spacing-display);
+  line-height: 1.05;
+}
+
+.header-clock small {
+  color: var(--tg-color-fg-muted);
+  font-size: var(--tg-font-size-2xs);
+  letter-spacing: var(--tg-letter-spacing-label);
+  line-height: 1.1;
+}
+
+/* Header icon controls with centered vertical separators between them. */
+.header-control {
+  align-items: center;
+  border-inline-start: 0;
+  color: var(--tg-color-fg-secondary);
+  display: inline-flex;
+  justify-content: center;
+  min-block-size: var(--tg-size-header);
+  min-inline-size: calc(var(--tg-size-control-md) + var(--tg-space-2));
+  position: relative;
+  transition: color var(--tg-duration-fast) var(--tg-easing-standard);
+  z-index: 2;
+}
+
+.header-control::before {
+  background: var(--tg-color-border-subtle);
+  block-size: var(--tg-space-6);
+  content: '';
+  inline-size: var(--tg-border-width-hairline);
+  inset: 50% auto auto 0;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+.header-control:hover {
+  color: var(--tg-color-action-secondary-fg);
+}
+
+.header-control-exit {
+  color: var(--tg-color-status-error-border);
+}
+
+.header-control-exit:hover {
+  color: var(--tg-color-red-400);
+}
+
+@media (max-width: 64rem) {
+  .app-header {
+    padding-inline: var(--tg-size-page-gutter-mobile);
+  }
+  .app-header::before {
+    display: none;
+  }
+  .header-status {
+    clip-path: none;
+    padding-inline-start: var(--tg-space-2);
+  }
+}
+
+@media (max-width: 36rem) {
+  .app-header {
+    border-block-end: var(--tg-border-width-hairline) solid var(--hdr-red-dim);
+  }
+}

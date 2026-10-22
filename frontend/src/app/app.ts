@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import {
   IconActivity,
   IconArrowRight,
@@ -29,12 +29,13 @@ interface NavigationItem {
   label: string;
   icon: TablerIcon;
   adminOnly?: boolean;
+  group: 'primary' | 'secondary';
 }
 
 @Component({
   imports: [CommonModule, TablerIconComponent],
   selector: 'app-root',
-  styleUrl: './app.css',
+  styleUrls: ['./app.css', './sidebar.css', './header.css', './dashboard.css'],
   templateUrl: './app.html',
 })
 export class App {
@@ -47,15 +48,25 @@ export class App {
   protected readonly activePage = signal('Dashboard');
 
   protected readonly navigation: readonly NavigationItem[] = [
-    { label: 'Dashboard', icon: IconHome },
-    { label: 'Jogos', icon: IconDeviceGamepad2 },
-    { label: 'Tags NFC', icon: IconNfc },
-    { label: 'Leitores', icon: IconActivity, adminOnly: true },
-    { label: 'PCs e agentes', icon: IconDeviceDesktop, adminOnly: true },
-    { label: 'Sessões', icon: IconPlayerPlay },
-    { label: 'Usuários', icon: IconHierarchy3, adminOnly: true },
-    { label: 'Auditoria', icon: IconFileText, adminOnly: true },
+    { label: 'Dashboard', icon: IconHome, group: 'primary' },
+    { label: 'Games', icon: IconDeviceGamepad2, group: 'primary' },
+    { label: 'NFC Tags', icon: IconTag, group: 'primary' },
+    { label: 'Automation', icon: IconHierarchy3, group: 'primary' },
+    { label: 'Settings', icon: IconSettings, group: 'primary' },
+    { label: 'System', icon: IconServer2, group: 'secondary' },
+    { label: 'Logs', icon: IconFileText, group: 'secondary' },
   ];
+
+  protected readonly guestNavigation: readonly NavigationItem[] = [
+    { label: 'Dashboard', icon: IconHome, group: 'primary' },
+    { label: 'Jogos', icon: IconDeviceGamepad2, group: 'primary' },
+    { label: 'Tags NFC', icon: IconNfc, group: 'primary' },
+    { label: 'Sessões', icon: IconPlayerPlay, group: 'primary' },
+  ];
+
+  protected readonly visibleNavigation = computed(() =>
+    this.role() === 'admin' ? this.navigation : this.guestNavigation,
+  );
 
   protected readonly icons = {
     activity: IconActivity,

@@ -1,0 +1,167 @@
+/*
+ * Sidebar visual layer (loaded after app.css, so it refines the base rules).
+ * Visual only: no behavior or data lives here.
+ */
+
+/*
+ * Red technical edge.
+ * Right side: the continuous line comes from the base border-inline-end.
+ * Left side: a 4px-pitch dotted track whose bars vary in length like a mixer/equalizer
+ * waveform, built from layered gradients with different widths and periods.
+ */
+.sidebar {
+  background:
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) var(--tg-space-1)) left 0 top 0 / var(--tg-space-1) 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) var(--tg-space-3)) left 0 top 0 / var(--tg-space-2) 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) var(--tg-space-5)) left 0 top var(--tg-space-2) / var(--tg-space-3) 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))) left 0 top var(--tg-space-4) / var(--tg-space-4) 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))) left 0 top var(--tg-space-3) / var(--tg-space-2) 100% no-repeat,
+    repeating-linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--tg-border-width-hairline), transparent var(--tg-border-width-hairline) calc(var(--tg-space-8) + var(--tg-space-1))) left 0 top calc(var(--tg-space-4) + var(--tg-space-1)) / var(--tg-space-2) 100% no-repeat,
+    linear-gradient(180deg, var(--tg-color-bg-subtle), var(--tg-color-bg-canvas) 70%);
+  box-shadow: var(--tg-space-1) 0 var(--tg-space-4) var(--tg-color-status-error-bg);
+  border-inline-end: 0;
+  overflow: visible;
+}
+
+.navigation { gap: var(--tg-space-1); margin-block-start: var(--tg-space-6); }
+
+/*
+ * Brand brackets: chamfered "cyber" brackets on the left and right of the logo.
+ * Only the corners are thick; a thin, dimmer line links the top and bottom corners along
+ * each side. ::before is the left bracket and ::after the right one (mirrored, shorter arms).
+ * The sidebar's own top-left corner mark is hidden because it duplicated the brand corner.
+ * A very soft red glow sits behind the four corners via the brand background.
+ */
+.sidebar::before { display: none; }
+.sidebar-brand {
+  --brk-t: var(--tg-border-width-strong);
+  --brk-h: var(--tg-border-width-hairline);
+  --brk-k: calc(var(--tg-border-width-strong) * 0.41);
+  --brk-c: calc(var(--tg-space-1) + var(--tg-space-0-5));
+  --brk-v: var(--tg-space-3);
+  --brk-link: color-mix(in srgb, var(--tg-color-status-error-border) 70%, transparent);
+  background:
+    radial-gradient(circle at 0 0, var(--tg-color-status-error-bg), transparent var(--tg-space-5)),
+    radial-gradient(circle at 100% 0, var(--tg-color-status-error-bg), transparent var(--tg-space-5)),
+    radial-gradient(circle at 0 100%, var(--tg-color-status-error-bg), transparent var(--tg-space-5)),
+    radial-gradient(circle at 100% 100%, var(--tg-color-status-error-bg), transparent var(--tg-space-5));
+}
+.sidebar-brand::before, .sidebar-brand::after {
+  background: linear-gradient(180deg, var(--tg-color-status-error-border) 0 var(--brk-v), var(--brk-link) var(--brk-v) calc(100% - var(--brk-v)), var(--tg-color-status-error-border) calc(100% - var(--brk-v)) 100%);
+  content: '';
+  display: block;
+  inset: 0;
+  opacity: 1;
+  pointer-events: none;
+  position: absolute;
+  z-index: var(--tg-z-base);
+}
+.sidebar-brand::before {
+  --brk-a: var(--tg-space-4);
+  clip-path: polygon(var(--brk-a) 0, var(--brk-c) 0, 0 var(--brk-c), 0 calc(100% - var(--brk-c)), var(--brk-c) 100%, var(--brk-a) 100%, var(--brk-a) calc(100% - var(--brk-t)), calc(var(--brk-c) + var(--brk-k)) calc(100% - var(--brk-t)), var(--brk-t) calc(100% - var(--brk-c) - var(--brk-k)), var(--brk-t) calc(100% - var(--brk-v)), var(--brk-h) calc(100% - var(--brk-v)), var(--brk-h) var(--brk-v), var(--brk-t) var(--brk-v), var(--brk-t) calc(var(--brk-c) + var(--brk-k)), calc(var(--brk-c) + var(--brk-k)) var(--brk-t), var(--brk-a) var(--brk-t));
+}
+.sidebar-brand::after {
+  --brk-a: var(--tg-space-3);
+  clip-path: polygon(calc(100% - var(--brk-a)) 0, calc(100% - var(--brk-c)) 0, 100% var(--brk-c), 100% calc(100% - var(--brk-c)), calc(100% - var(--brk-c)) 100%, calc(100% - var(--brk-a)) 100%, calc(100% - var(--brk-a)) calc(100% - var(--brk-t)), calc(100% - var(--brk-c) - var(--brk-k)) calc(100% - var(--brk-t)), calc(100% - var(--brk-t)) calc(100% - var(--brk-c) - var(--brk-k)), calc(100% - var(--brk-t)) calc(100% - var(--brk-v)), calc(100% - var(--brk-h)) calc(100% - var(--brk-v)), calc(100% - var(--brk-h)) var(--brk-v), calc(100% - var(--brk-t)) var(--brk-v), calc(100% - var(--brk-t)) calc(var(--brk-c) + var(--brk-k)), calc(100% - var(--brk-c) - var(--brk-k)) var(--brk-t), calc(100% - var(--brk-a)) var(--brk-t));
+}
+
+.nav-item {
+  border-inline-start-width: var(--tg-border-width-strong);
+  font-size: var(--tg-font-size-md);
+  font-weight: var(--tg-font-weight-medium);
+  gap: var(--tg-space-4);
+  min-block-size: calc(var(--tg-size-control-lg) + var(--tg-space-1));
+  padding-inline: var(--tg-space-5);
+  position: relative;
+  transition: background var(--tg-duration-normal) var(--tg-easing-standard), color var(--tg-duration-normal) var(--tg-easing-standard);
+}
+.nav-item:hover { border-inline-start-color: var(--tg-color-command-border); }
+
+/*
+ * Active item: neon outline with a chamfered right side and ornaments.
+ * - ::before is the vivid cyan outer contour (chamfered).
+ * - ::after is the dark inner panel (inset by --nav-edge), the solid cyan block on
+ *   the left, the inner double line and the cyan corner brackets on the right.
+ * - The glow comes from drop-shadow on the item itself, so the chamfer clip on
+ *   the pseudo-elements does not cut it. The item runs over the red edge line.
+ */
+.nav-item.is-active {
+  --nav-edge: calc(var(--tg-border-width-hairline) * 1.5);
+  --nav-cut: var(--tg-clip-corner-sm);
+  background: transparent;
+  border: 0;
+  color: var(--tg-color-action-secondary-fg);
+  filter: drop-shadow(0 0 var(--tg-space-2) var(--tg-color-status-info-border));
+  margin-inline-end: calc((var(--tg-space-4) + var(--tg-border-width-hairline)) * -1);
+  padding-inline-start: calc(var(--tg-space-5) + var(--tg-border-width-strong));
+  z-index: var(--tg-z-sticky);
+}
+.nav-item.is-active::before {
+  background: var(--tg-color-action-primary-bg);
+  clip-path: polygon(0 0, calc(100% - var(--nav-cut)) 0, 100% var(--nav-cut), 100% calc(100% - var(--nav-cut)), calc(100% - var(--nav-cut)) 100%, 0 100%);
+  content: '';
+  inset: 0;
+  position: absolute;
+  z-index: -2;
+}
+.nav-item.is-active::after {
+  background:
+    linear-gradient(var(--tg-color-action-primary-bg), var(--tg-color-action-primary-bg)) left 0 top 0 / var(--tg-space-2) 100% no-repeat,
+    linear-gradient(var(--tg-color-action-primary-bg), var(--tg-color-action-primary-bg)) right calc(var(--nav-cut) + var(--nav-edge)) top 0 / var(--tg-space-4) var(--tg-border-width-strong) no-repeat,
+    linear-gradient(var(--tg-color-action-primary-bg), var(--tg-color-action-primary-bg)) right 0 top calc(var(--nav-cut) + var(--nav-edge)) / var(--tg-border-width-strong) var(--tg-space-4) no-repeat,
+    linear-gradient(var(--tg-color-action-primary-bg), var(--tg-color-action-primary-bg)) right calc(var(--nav-cut) + var(--nav-edge)) bottom 0 / var(--tg-space-4) var(--tg-border-width-strong) no-repeat,
+    linear-gradient(var(--tg-color-action-primary-bg), var(--tg-color-action-primary-bg)) right 0 bottom calc(var(--nav-cut) + var(--nav-edge)) / var(--tg-border-width-strong) var(--tg-space-4) no-repeat,
+    linear-gradient(var(--tg-color-command-border), var(--tg-color-command-border)) right var(--tg-space-1) top var(--tg-space-2) / var(--tg-border-width-hairline) calc(100% - var(--tg-space-4)) no-repeat,
+    linear-gradient(90deg, var(--tg-color-status-info-bg), var(--tg-color-bg-subtle)),
+    var(--tg-color-bg-canvas);
+  clip-path: polygon(0 0, calc(100% - var(--nav-cut) + var(--nav-edge) * 0.6) 0, 100% calc(var(--nav-cut) - var(--nav-edge) * 0.6), 100% calc(100% - var(--nav-cut) + var(--nav-edge) * 0.6), calc(100% - var(--nav-cut) + var(--nav-edge) * 0.6) 100%, 0 100%);
+  content: '';
+  inset: var(--nav-edge) var(--nav-edge) var(--nav-edge) 0;
+  position: absolute;
+  z-index: -1;
+}
+.nav-item.is-active .nav-icon { color: var(--tg-color-action-primary-bg); }
+
+.nav-divider {
+  background: linear-gradient(90deg, var(--tg-color-command-border), var(--tg-color-border-subtle));
+  block-size: var(--tg-border-width-hairline);
+  margin-block: var(--tg-space-3);
+  margin-inline: var(--tg-space-2);
+}
+
+/*
+ * Footer: two light lines (above and below), same gradient as the brand separator,
+ * and a thicker chamfered elbow in the bottom-right corner, like the brand brackets.
+ */
+.sidebar-footer {
+  --foot-line: linear-gradient(90deg, var(--tg-color-border-subtle) 0%, var(--tg-color-border-strong) 20%, var(--tg-color-border-strong) 80%, var(--tg-color-border-subtle) 100%);
+  background: var(--foot-line) top / 100% var(--tg-border-width-hairline) no-repeat, var(--foot-line) bottom / 100% var(--tg-border-width-hairline) no-repeat;
+  border-block-start: 0;
+  grid-template-columns: auto 1fr;
+  margin-block-end: var(--tg-space-4);
+}
+/*
+ * Right edge line: the sidebar's own border is replaced by this line, which runs the full
+ * height and bends inward at the bottom with a chamfered elbow. The elbow section is
+ * slightly thicker than the line, like the brand brackets.
+ */
+.sidebar::after {
+  --elb-h: var(--tg-border-width-hairline);
+  --elb-t: calc(var(--tg-border-width-strong) + var(--tg-border-width-hairline));
+  --elb-k: calc(var(--elb-t) * 0.41);
+  --elb-c: var(--tg-space-2);
+  --elb-v: var(--tg-space-8);
+  background: var(--tg-color-status-error-border);
+  block-size: auto;
+  border: 0;
+  clip-path: polygon(100% 0, 100% calc(100% - var(--elb-c)), calc(100% - var(--elb-c)) 100%, 0 100%, 0 calc(100% - var(--elb-t)), calc(100% - var(--elb-c) - var(--elb-k)) calc(100% - var(--elb-t)), calc(100% - var(--elb-t)) calc(100% - var(--elb-c) - var(--elb-k)), calc(100% - var(--elb-t)) calc(100% - var(--elb-v)), calc(100% - var(--elb-h)) calc(100% - var(--elb-v)), calc(100% - var(--elb-h)) 0);
+  content: '';
+  inline-size: var(--tg-space-6);
+  inset: 0 0 var(--tg-space-2) auto;
+  pointer-events: none;
+  position: absolute;
+}
+
+.sidebar-footer strong { color: var(--tg-color-fg-secondary); font-family: var(--tg-font-family-mono); font-size: var(--tg-font-size-xs); font-weight: var(--tg-font-weight-regular); }
+
+@media (max-width: 64rem) { .sidebar { box-shadow: none; } .drawer-open .sidebar { box-shadow: var(--tg-shadow-2); } }

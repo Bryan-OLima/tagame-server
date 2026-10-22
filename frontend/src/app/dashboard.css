@@ -1,0 +1,98 @@
+/*
+ * Dashboard panels visual layer (loaded after app.css).
+ * Gives every .tech-panel a continuous chamfered cyan contour (no clipped corner gaps),
+ * corner accents, outer neon drop-shadow glow, and subtle inner cyan/teal edge glow.
+ */
+
+.tech-panel {
+  --pnl-cut: var(--tg-clip-corner-md);
+  --pnl-edge: 1.5px;
+  --pnl-corner: var(--tg-space-6);
+  background: transparent;
+  border: 0;
+  clip-path: none;
+  filter:
+    drop-shadow(0 0 var(--tg-space-1) color-mix(in srgb, var(--tg-color-cyan-400) 14%, transparent))
+    drop-shadow(0 var(--tg-space-1) var(--tg-space-4) color-mix(in srgb, var(--tg-color-cyan-700) 20%, transparent));
+  isolation: isolate;
+  position: relative;
+}
+
+/* Outer chamfered cyan contour with brighter corner brackets. */
+.tech-panel::before {
+  background:
+    radial-gradient(circle at 0 0, var(--tg-color-cyan-300), transparent var(--pnl-corner)),
+    radial-gradient(circle at 100% 0, var(--tg-color-cyan-300), transparent var(--pnl-corner)),
+    radial-gradient(circle at 0 100%, var(--tg-color-cyan-300), transparent var(--pnl-corner)),
+    radial-gradient(circle at 100% 100%, var(--tg-color-cyan-300), transparent var(--pnl-corner)),
+    linear-gradient(
+      135deg,
+      var(--tg-color-cyan-400) 0%,
+      var(--tg-color-command-border) 35%,
+      color-mix(in srgb, var(--tg-color-command-border) 78%, var(--tg-color-cyan-700)) 70%,
+      var(--tg-color-cyan-400) 100%
+    );
+  clip-path: polygon(
+    0 var(--pnl-cut),
+    var(--pnl-cut) 0,
+    calc(100% - var(--pnl-cut)) 0,
+    100% var(--pnl-cut),
+    100% calc(100% - var(--pnl-cut)),
+    calc(100% - var(--pnl-cut)) 100%,
+    var(--pnl-cut) 100%,
+    0 calc(100% - var(--pnl-cut))
+  );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -2;
+}
+
+/* Inner chamfered surface with subtle cyan inner-glow along the edges and header. */
+.tech-panel::after {
+  background:
+    /* Top header cyan ambient glow */
+    radial-gradient(
+      ellipse 50% 24% at 22% 0%,
+      color-mix(in srgb, var(--tg-color-cyan-500) 11%, transparent),
+      transparent 75%
+    ),
+    /* Inner edge glow (top, bottom, left, right) */
+    linear-gradient(180deg, color-mix(in srgb, var(--tg-color-cyan-400) 6%, transparent) 0, transparent var(--tg-space-5)),
+    linear-gradient(0deg, color-mix(in srgb, var(--tg-color-cyan-400) 5%, transparent) 0, transparent var(--tg-space-4)),
+    linear-gradient(90deg, color-mix(in srgb, var(--tg-color-cyan-400) 5%, transparent) 0, transparent var(--tg-space-4)),
+    linear-gradient(270deg, color-mix(in srgb, var(--tg-color-cyan-400) 5%, transparent) 0, transparent var(--tg-space-4)),
+    /* Corner tick accents inside the chamfer */
+    linear-gradient(var(--tg-color-cyan-400), var(--tg-color-cyan-400)) left var(--pnl-cut) bottom 0 / var(--tg-space-4) 1.5px no-repeat,
+    linear-gradient(var(--tg-color-cyan-400), var(--tg-color-cyan-400)) right var(--pnl-cut) bottom 0 / var(--tg-space-4) 1.5px no-repeat,
+    /* Base dark console surface */
+    linear-gradient(135deg, color-mix(in srgb, var(--tg-color-bg-surface) 94%, var(--tg-color-cyan-700)) 0%, var(--tg-color-bg-subtle) 100%);
+  clip-path: polygon(
+    0 calc(var(--pnl-cut) - var(--pnl-edge) * 0.4),
+    calc(var(--pnl-cut) - var(--pnl-edge) * 0.4) 0,
+    calc(100% - var(--pnl-cut) + var(--pnl-edge) * 0.4) 0,
+    100% calc(var(--pnl-cut) - var(--pnl-edge) * 0.4),
+    100% calc(100% - var(--pnl-cut) + var(--pnl-edge) * 0.4),
+    calc(100% - var(--pnl-cut) + var(--pnl-edge) * 0.4) 100%,
+    calc(var(--pnl-cut) - var(--pnl-edge) * 0.4) 100%,
+    0 calc(100% - var(--pnl-cut) + var(--pnl-edge) * 0.4)
+  );
+  content: '';
+  inset: var(--pnl-edge);
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.panel-heading {
+  border-block-end-color: color-mix(in srgb, var(--tg-color-command-border) 38%, var(--tg-color-border-subtle));
+}
+
+.panel-heading h2 {
+  text-shadow: 0 0 var(--tg-space-2) color-mix(in srgb, var(--tg-color-cyan-400) 18%, transparent);
+}
+
+.panel-icon {
+  filter: drop-shadow(0 0 2px color-mix(in srgb, var(--tg-color-cyan-400) 32%, transparent));
+}
